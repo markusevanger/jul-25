@@ -2,11 +2,10 @@ import './globals.css'
 
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
-import {Inter} from 'next/font/google'
+import {Baskervville, Geom} from 'next/font/google'
 import {draftMode} from 'next/headers'
-import {VisualEditing, toPlainText} from 'next-sanity'
-import {Toaster} from 'sonner'
-
+import {VisualEditing} from 'next-sanity/visual-editing'
+import {toPlainText} from 'next-sanity'
 import DraftModeToast from '@/app/components/DraftModeToast'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
@@ -23,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // Metadata should never contain stega
     stega: false,
   })
-  const title = settings?.title || 'Site'
+  const title = settings?.title || 'Quiz'
   const description = settings?.description
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
@@ -45,23 +44,32 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       images: ogImage ? [ogImage] : [],
     },
+    icons: {
+      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎅</text></svg>",
+    },
   }
 }
 
-const inter = Inter({
-  variable: '--font-inter',
+const baskervville = Baskervville({
+  variable: '--font-baskervville',
   subsets: ['latin'],
   display: 'swap',
+  weight: '400',
+})
+
+const geom = Geom({
+  variable: '--font-geom',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '400',
 })
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
+    <html lang="en" className={`${baskervville.variable} ${geom.variable} bg-white text-black`}>
       <body>
-        {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
-        <Toaster />
         {isDraftMode && (
           <>
             <DraftModeToast />

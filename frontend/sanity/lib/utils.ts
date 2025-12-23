@@ -1,4 +1,4 @@
-import createImageUrlBuilder from '@sanity/image-url'
+import {createImageUrlBuilder} from '@sanity/image-url'
 import {dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import {createDataAttribute, CreateDataAttributeProps} from 'next-sanity'
 import {getImageDimensions} from '@sanity/asset-utils'
