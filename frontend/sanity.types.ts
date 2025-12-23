@@ -13,6 +13,44 @@
  */
 
 // Source: ../studio/schema.json
+export type Media = {
+  type?: "image" | "video";
+  image?: MediaImage;
+  videoSource?: "external" | "file";
+  videoUrl?: string;
+  videoFile?: VideoFile;
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type MediaImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown // Unable to locate the referenced type "image.media" in schema
+  ;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type VideoFile = {
+  asset?: SanityFileAssetReference;
+  media?: unknown // Unable to locate the referenced type "videoFile.media" in schema
+  ;
+  _type: "file";
+};
+
 export type AnswerOption = {
   _type: "answerOption";
   text: string;
@@ -23,33 +61,7 @@ export type Question = {
   _type: "question";
   questionText: string;
   questionType: "radio" | "text";
-  media?: {
-    type?: "image" | "video";
-    image?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-    videoSource?: "external" | "file";
-    videoUrl?: string;
-    videoFile?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-      };
-      media?: unknown;
-      _type: "file";
-    };
-  };
+  media?: Media;
   options?: Array<{
     _key: string;
   } & AnswerOption>;
@@ -133,12 +145,7 @@ export type Settings = {
     _key: string;
   }>;
   ogImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -182,14 +189,16 @@ export type SanityAssistOutputField = {
   path?: string;
 };
 
+export type AssistInstructionContextReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "assist.instruction.context";
+};
+
 export type SanityAssistInstructionContext = {
   _type: "sanity.assist.instruction.context";
-  reference: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "assist.instruction.context";
-  };
+  reference: AssistInstructionContextReference;
 };
 
 export type AssistInstructionContext = {
@@ -371,7 +380,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = AnswerOption | Question | BlockContent | Quiz | SanityImageCrop | SanityImageHotspot | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Media | SanityImageAssetReference | MediaImage | SanityFileAssetReference | VideoFile | AnswerOption | Question | BlockContent | Quiz | SanityImageCrop | SanityImageHotspot | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
@@ -405,12 +414,7 @@ export type SettingsQueryResult = {
     _key: string;
   }>;
   ogImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
