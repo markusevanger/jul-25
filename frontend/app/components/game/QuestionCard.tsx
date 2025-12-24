@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { AudioPlayer } from 'react-audio-play'
 import type { QuestionForPlayer } from '@/types/game'
 
 interface QuestionCardProps {
@@ -84,15 +85,14 @@ export function QuestionCard({
       {question.media?.type === 'audio' && question.media.audioFile?.asset?.url && (
         <div className="mb-6 flex flex-col items-center justify-center overflow-hidden rounded-lg bg-bg p-4">
           <p className="mb-2 text-sm text-muted">Trykk på play for å lytte</p>
-          <audio
+          <AudioPlayer
             src={question.media.audioFile.asset.url}
-            controls
-            playsInline
             preload="metadata"
-            className="w-full"
-          >
-            <track kind="captions" />
-          </audio>
+            color="#dc2626"
+            sliderColor="#dc2626"
+            backgroundColor="#ffffff"
+            style={{ width: '100%', borderRadius: '0.5rem' }}
+          />
         </div>
       )}
 
