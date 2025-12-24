@@ -130,15 +130,14 @@ export default function PlayPage() {
   })
 
   // Handle feedback complete - transition to next question
+  // Note: Don't increment currentQuestionIndex here - the realtime subscription
+  // will update it when the database changes to avoid double-incrementing
   const handleFeedbackComplete = useCallback(() => {
     if (answerFeedback.isLastQuestion) {
       setIsFinished(true)
     }
     startViewTransition(() => {
       setAnswerFeedback({ show: false, isCorrect: false, isLastQuestion: false })
-      if (!answerFeedback.isLastQuestion) {
-        setCurrentQuestionIndex((prev) => prev + 1)
-      }
     })
   }, [answerFeedback.isLastQuestion])
 
@@ -208,7 +207,7 @@ export default function PlayPage() {
             onClick={() => window.location.reload()}
             className="rounded-lg border border-border bg-card px-4 py-2 hover:bg-card-hover"
           >
-            Last pa nytt
+            Last på nytt
           </button>
         </div>
       </div>
@@ -241,7 +240,9 @@ export default function PlayPage() {
           <div className="mb-4 flex items-center justify-between">
             <h1 className="font-display text-xl font-bold text-primary">{quiz.title}</h1>
             <span className="text-sm text-muted">
-              Sporsmal {currentQuestionIndex + 1} av {quiz.totalQuestions}
+              {isFinished
+                ? `Fullført ${quiz.totalQuestions} av ${quiz.totalQuestions}`
+                : `Spørsmål ${currentQuestionIndex + 1} av ${quiz.totalQuestions}`}
             </span>
           </div>
 
@@ -250,7 +251,9 @@ export default function PlayPage() {
             <div
               className="h-full bg-success transition-all"
               style={{
-                width: `${(currentQuestionIndex / (quiz.totalQuestions ?? 1)) * 100}%`,
+                width: isFinished
+                  ? '100%'
+                  : `${(currentQuestionIndex / (quiz.totalQuestions ?? 1)) * 100}%`,
               }}
             />
           </div>
@@ -261,7 +264,7 @@ export default function PlayPage() {
                 Du er ferdig!
               </h2>
               <p className="text-text">
-                Venter pa at de andre spillerne skal bli ferdige...
+                Venter på at de andre spillerne skal bli ferdige...
               </p>
             </div>
           ) : currentQuestion ? (

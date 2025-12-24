@@ -6,7 +6,7 @@ export function PauseOverlay() {
       <div className="text-center">
         <div className="mb-4 text-6xl">&#9208;</div>
         <h2 className="mb-2 font-display text-2xl font-bold text-white">Spillet er pauset</h2>
-        <p className="text-white/70">Venter pa at verten starter spillet igjen...</p>
+        <p className="text-white/70">Venter på at verten starter spillet igjen...</p>
       </div>
     </div>
   )

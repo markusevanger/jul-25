@@ -55,18 +55,22 @@ export function QuestionCard({
       )}
 
       {question.media?.type === 'video' && (
-        <div className="mb-6 aspect-video overflow-hidden rounded-lg">
-          {question.media.videoSource === 'file' && question.media.videoFile?.asset?.url ? (
+        <div className="mb-6 aspect-video overflow-hidden rounded-lg bg-black">
+          {question.media.videoFile?.asset?.url ? (
             // eslint-disable-next-line jsx-a11y/media-has-caption
             <video
+              key={question.media.videoFile.asset.url}
               src={question.media.videoFile.asset.url}
               controls
               autoPlay
               muted
+              playsInline
+              preload="auto"
               className="h-full w-full"
             />
           ) : question.media.videoUrl ? (
             <iframe
+              key={question.media.videoUrl}
               src={getEmbedUrl(question.media.videoUrl)}
               className="h-full w-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -78,11 +82,13 @@ export function QuestionCard({
       )}
 
       {question.media?.type === 'audio' && question.media.audioFile?.asset?.url && (
-        <div className="mb-6 aspect-video flex items-center justify-center overflow-hidden rounded-lg bg-bg p-4">
+        <div className="mb-6 flex flex-col items-center justify-center overflow-hidden rounded-lg bg-bg p-4">
+          <p className="mb-2 text-sm text-muted">Trykk på play for å lytte</p>
           <audio
             src={question.media.audioFile.asset.url}
             controls
-            autoPlay
+            playsInline
+            preload="metadata"
             className="w-full"
           >
             <track kind="captions" />

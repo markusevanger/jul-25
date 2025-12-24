@@ -492,6 +492,24 @@ export type QuizByIdQueryResult = {
 } | null;
 
 // Source: sanity/lib/queries.ts
+// Variable: quizAnswersQuery
+// Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    wrongAnswerPenalty,    "totalQuestions": count(questions),    questions[] {      _key,      questionType,      options[] {        text,        isCorrect      },      correctAnswer    }  }
+export type QuizAnswersQueryResult = {
+  _id: string;
+  wrongAnswerPenalty: number | null;
+  totalQuestions: number | null;
+  questions: Array<{
+    _key: string;
+    questionType: "radio" | "text" | null;
+    options: Array<{
+      text: string | null;
+      isCorrect: boolean | null;
+    }> | null;
+    correctAnswer: string | null;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
 // Variable: quizForPlayerQuery
 // Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    title,    description,    wrongAnswerPenalty,    "totalQuestions": count(questions),    questions[] {      _key,      questionText,      questionType,      media {        type,        image {          asset->{            _id,            url,            metadata { lqip, dimensions }          },          alt        },        videoSource,        videoUrl,        videoFile {          asset->{            _id,            url          }        },        audioFile {          asset->{            _id,            url          }        }      },      options[] {        _key,        text      }    }  }
 export type QuizForPlayerQueryResult = {
@@ -546,6 +564,7 @@ declare module "@sanity/client" {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == \"quiz\"] | order(_createdAt desc) {\n    _id,\n    title,\n    description,\n    \"questionCount\": count(questions)\n  }\n": AllQuizzesQueryResult;
     "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        },\n        audioFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text,\n        isCorrect\n      },\n      correctAnswer\n    }\n  }\n": QuizByIdQueryResult;
+    "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    wrongAnswerPenalty,\n    \"totalQuestions\": count(questions),\n    questions[] {\n      _key,\n      questionType,\n      options[] {\n        text,\n        isCorrect\n      },\n      correctAnswer\n    }\n  }\n": QuizAnswersQueryResult;
     "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    \"totalQuestions\": count(questions),\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        },\n        audioFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text\n      }\n    }\n  }\n": QuizForPlayerQueryResult;
   }
 }

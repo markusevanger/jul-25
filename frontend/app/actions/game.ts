@@ -2,8 +2,8 @@
 
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { sanityFetch } from '@/sanity/lib/client'
-import { quizByIdQuery } from '@/sanity/lib/queries'
-import type { QuizByIdQueryResult } from '@/sanity.types'
+import { quizAnswersQuery } from '@/sanity/lib/queries'
+import type { QuizAnswersQueryResult } from '@/sanity.types'
 import type { AnswerResult } from '@/types/game'
 
 export async function submitAnswer(
@@ -14,9 +14,9 @@ export async function submitAnswer(
 ): Promise<AnswerResult> {
   const supabase = await createServerSupabaseClient()
 
-  // Get quiz to check answer
-  const quiz = await sanityFetch<QuizByIdQueryResult>({
-    query: quizByIdQuery,
+  // Get quiz answer data (minimal query - no media, just answer validation fields)
+  const quiz = await sanityFetch<QuizAnswersQueryResult>({
+    query: quizAnswersQuery,
     params: { quizId },
     tags: ['quiz', quizId],
   })

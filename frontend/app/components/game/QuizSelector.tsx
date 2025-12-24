@@ -43,7 +43,7 @@ export function QuizSelector({ quizzes }: QuizSelectorProps) {
             <p className="mt-1 text-sm text-muted">{quiz.description}</p>
           )}
           <p className="mt-2 text-sm text-muted">
-            {quiz.questionCount} sporsmal
+            {quiz.questionCount} spørsmål
           </p>
           {isCreating === quiz._id && (
             <p className="mt-2 text-sm text-success">Oppretter spill...</p>

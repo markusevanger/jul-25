@@ -11,3 +11,13 @@ export const browserClient = createClient({
   useCdn: true,
   perspective: 'published',
 })
+
+// Browser client without CDN - use for fetches that need fresh asset URLs
+// Bypasses CDN cache to ensure assets (video, audio files) have resolved URLs
+export const browserClientNoCdn = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
+  perspective: 'published',
+})

@@ -2,6 +2,7 @@
 
 import Snowfall from 'react-snowfall'
 import Button from '@/app/components/Button'
+import AnimatedHeroText from '@/app/components/AnimatedHeroText'
 import { PlusIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 
 export default function HomePage() {
@@ -19,9 +20,7 @@ export default function HomePage() {
         }}
       />
       <div className="relative z-10 text-center">
-        <h1 className="mb-20 font-display text-6xl font-bold text-primary">
-        🎅Julequiz🎄  
-        </h1>
+        <AnimatedHeroText />
 
 
         <div className="flex flex-col gap-4">

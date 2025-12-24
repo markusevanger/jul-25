@@ -57,6 +57,24 @@ export const quizByIdQuery = defineQuery(`
   }
 `)
 
+// For checking answers - minimal query with only what's needed for validation
+export const quizAnswersQuery = defineQuery(`
+  *[_type == "quiz" && _id == $quizId][0] {
+    _id,
+    wrongAnswerPenalty,
+    "totalQuestions": count(questions),
+    questions[] {
+      _key,
+      questionType,
+      options[] {
+        text,
+        isCorrect
+      },
+      correctAnswer
+    }
+  }
+`)
+
 // For player view - excludes correct answers (isCorrect and correctAnswer)
 export const quizForPlayerQuery = defineQuery(`
   *[_type == "quiz" && _id == $quizId][0] {
