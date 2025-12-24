@@ -34,12 +34,13 @@ export function QuestionCard({
     if (disabled) return
     setSelectedOption(option)
     onAnswer(option)
-    // Reset after a short delay
-    setTimeout(() => setSelectedOption(null), 500)
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div
+      className="animate-slide-in rounded-xl border border-border bg-card p-6"
+      style={{ viewTransitionName: 'question-card' }}
+    >
       {/* Media */}
       {question.media?.type === 'image' && question.media.image?.asset?.url && (
         <div className="mb-6 overflow-hidden rounded-lg">
@@ -60,6 +61,8 @@ export function QuestionCard({
             <video
               src={question.media.videoFile.asset.url}
               controls
+              autoPlay
+              muted
               className="h-full w-full"
             />
           ) : question.media.videoUrl ? (
@@ -71,6 +74,19 @@ export function QuestionCard({
               title="Video"
             />
           ) : null}
+        </div>
+      )}
+
+      {question.media?.type === 'audio' && question.media.audioFile?.asset?.url && (
+        <div className="mb-6 aspect-video flex items-center justify-center overflow-hidden rounded-lg bg-bg p-4">
+          <audio
+            src={question.media.audioFile.asset.url}
+            controls
+            autoPlay
+            className="w-full"
+          >
+            <track kind="captions" />
+          </audio>
         </div>
       )}
 
@@ -102,6 +118,7 @@ export function QuestionCard({
         <div className="space-y-3">
           {question.options?.map((option, index) => (
             <button
+              type="button"
               key={option._key}
               onClick={() => handleSelectOption(option.text)}
               disabled={disabled}
@@ -129,13 +146,13 @@ function getEmbedUrl(url: string): string {
     /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/
   )
   if (youtubeMatch) {
-    return `https://www.youtube.com/embed/${youtubeMatch[1]}`
+    return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&mute=1`
   }
 
   // Vimeo
   const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
   if (vimeoMatch) {
-    return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&muted=1`
   }
 
   return url

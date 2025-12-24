@@ -1,4 +1,4 @@
-import {createClient} from 'next-sanity'
+import {createClient, type QueryParams} from 'next-sanity'
 
 import {apiVersion, dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import {token} from './token'
@@ -23,3 +23,23 @@ export const client = createClient({
     },
   },
 })
+
+/**
+ * Helper function for fetching with revalidation tags
+ * Uses Next.js cache tags for on-demand revalidation via Sanity webhooks
+ */
+export async function sanityFetch<T>({
+  query,
+  params = {},
+  tags = [],
+}: {
+  query: string
+  params?: QueryParams
+  tags?: string[]
+}): Promise<T> {
+  return client.fetch<T>(query, params, {
+    next: {
+      tags,
+    },
+  })
+}

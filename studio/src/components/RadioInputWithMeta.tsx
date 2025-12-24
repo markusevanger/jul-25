@@ -40,71 +40,75 @@ export const RadioInputWithMeta = forwardRef<HTMLDivElement, StringInputProps>((
   // Render metaOptions with icons/descriptions
   if (metaOptions && metaOptions.length > 0) {
     return (
-      <Stack space={2} ref={containerRef}>
-        {metaOptions.map((option) => {
-          const isSelected = value === option.value
-          const IconComponent = option.icon
+      <Card padding={3} radius={2} border ref={containerRef}>
+        <Stack space={2}>
+          {metaOptions.map((option) => {
+            const isSelected = value === option.value
+            const IconComponent = option.icon
 
-          return (
-            <Card
-              key={option.value}
-              padding={3}
-              radius={2}
-              shadow={isSelected ? 1 : 0}
-              tone={isSelected ? 'primary' : 'default'}
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleChange(option.value)}
-            >
-              <Flex align="flex-start" gap={3}>
-                <Box style={{ paddingTop: 2 }}>
-                  <Radio checked={isSelected} readOnly />
-                </Box>
-                {IconComponent && (
-                  <Box style={{ paddingTop: 2, fontSize: 20 }}>
-                    <IconComponent />
+            return (
+              <Card
+                key={option.value}
+                padding={3}
+                radius={2}
+                shadow={isSelected ? 1 : 0}
+                tone={isSelected ? 'primary' : 'default'}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleChange(option.value)}
+              >
+                <Flex align="flex-start" gap={3}>
+                  <Box style={{ paddingTop: 2 }}>
+                    <Radio checked={isSelected} readOnly />
                   </Box>
-                )}
-                <Stack space={2} flex={1}>
-                  <Text weight="medium">{option.title}</Text>
-                  {option.description && (
-                    <Text size={1} muted>
-                      {option.description}
-                    </Text>
+                  {IconComponent && (
+                    <Box style={{ paddingTop: 2, fontSize: 20 }}>
+                      <IconComponent />
+                    </Box>
                   )}
-                </Stack>
-              </Flex>
-            </Card>
-          )
-        })}
-      </Stack>
+                  <Stack space={2} flex={1}>
+                    <Text weight="medium">{option.title}</Text>
+                    {option.description && (
+                      <Text size={1} muted>
+                        {option.description}
+                      </Text>
+                    )}
+                  </Stack>
+                </Flex>
+              </Card>
+            )
+          })}
+        </Stack>
+      </Card>
     )
   }
 
   // Render simple list options
   return (
-    <Stack space={2} ref={containerRef}>
-      {listOptions?.map((option) => {
-        const optValue = typeof option === 'string' ? option : option.value
-        const optTitle = typeof option === 'string' ? option : option.title || option.value
-        const isSelected = value === optValue
+    <Card padding={3} radius={2} border ref={containerRef}>
+      <Stack space={2}>
+        {listOptions?.map((option) => {
+          const optValue = typeof option === 'string' ? option : option.value
+          const optTitle = typeof option === 'string' ? option : option.title || option.value
+          const isSelected = value === optValue
 
-        return (
-          <Card
-            key={optValue}
-            padding={3}
-            radius={2}
-            shadow={isSelected ? 1 : 0}
-            tone={isSelected ? 'primary' : 'default'}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleChange(optValue)}
-          >
-            <Flex align="center" gap={3}>
-              <Radio checked={isSelected} readOnly />
-              <Text weight="medium">{optTitle}</Text>
-            </Flex>
-          </Card>
-        )
-      })}
-    </Stack>
+          return (
+            <Card
+              key={optValue}
+              padding={3}
+              radius={2}
+              shadow={isSelected ? 1 : 0}
+              tone={isSelected ? 'primary' : 'default'}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleChange(optValue)}
+            >
+              <Flex align="center" gap={3}>
+                <Radio checked={isSelected} readOnly />
+                <Text weight="medium">{optTitle}</Text>
+              </Flex>
+            </Card>
+          )
+        })}
+      </Stack>
+    </Card>
   )
 })

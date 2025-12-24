@@ -14,11 +14,12 @@
 
 // Source: ../studio/schema.json
 export type Media = {
-  type?: "image" | "video";
+  type?: "image" | "video" | "audio";
   image?: MediaImage;
   videoSource?: "external" | "file";
   videoUrl?: string;
   videoFile?: VideoFile;
+  audioFile?: AudioFile;
 };
 
 export type SanityImageAssetReference = {
@@ -51,16 +52,23 @@ export type VideoFile = {
   _type: "file";
 };
 
+export type AudioFile = {
+  asset?: SanityFileAssetReference;
+  media?: unknown // Unable to locate the referenced type "audioFile.media" in schema
+  ;
+  _type: "file";
+};
+
 export type AnswerOption = {
   _type: "answerOption";
-  text: string;
+  text?: string;
   isCorrect?: boolean;
 };
 
 export type Question = {
   _type: "question";
-  questionText: string;
-  questionType: "radio" | "text";
+  questionText?: string;
+  questionType?: "radio" | "text";
   media?: Media;
   options?: Array<{
     _key: string;
@@ -78,7 +86,7 @@ export type BlockContent = Array<{
   style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
-    href: string;
+    href?: string;
     openInNewTab?: boolean;
     _type: "link";
     _key: string;
@@ -94,28 +102,28 @@ export type Quiz = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
+  title?: string;
   description?: string;
-  wrongAnswerPenalty: number;
-  questions: Array<{
+  wrongAnswerPenalty?: number;
+  questions?: Array<{
     _key: string;
   } & Question>;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
 };
 
 export type Settings = {
@@ -124,7 +132,7 @@ export type Settings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
+  title?: string;
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -135,7 +143,7 @@ export type Settings = {
     style?: "normal";
     listItem?: never;
     markDefs?: Array<{
-      href: string;
+      href?: string;
       openInNewTab?: boolean;
       _type: "link";
       _key: string;
@@ -198,7 +206,7 @@ export type AssistInstructionContextReference = {
 
 export type SanityAssistInstructionContext = {
   _type: "sanity.assist.instruction.context";
-  reference: AssistInstructionContextReference;
+  reference?: AssistInstructionContextReference;
 };
 
 export type AssistInstructionContext = {
@@ -226,7 +234,7 @@ export type AssistInstructionContext = {
 
 export type SanityAssistInstructionUserInput = {
   _type: "sanity.assist.instruction.userInput";
-  message: string;
+  message?: string;
   description?: string;
 };
 
@@ -299,9 +307,9 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height: number;
-  width: number;
-  aspectRatio: number;
+  height?: number;
+  width?: number;
+  aspectRatio?: number;
 };
 
 export type SanityImageMetadata = {
@@ -376,11 +384,11 @@ export type Geopoint = {
 
 export type Slug = {
   _type: "slug";
-  current: string;
+  current?: string;
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Media | SanityImageAssetReference | MediaImage | SanityFileAssetReference | VideoFile | AnswerOption | Question | BlockContent | Quiz | SanityImageCrop | SanityImageHotspot | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Media | SanityImageAssetReference | MediaImage | SanityFileAssetReference | VideoFile | AudioFile | AnswerOption | Question | BlockContent | Quiz | SanityImageCrop | SanityImageHotspot | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
@@ -393,7 +401,7 @@ export type SettingsQueryResult = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
+  title?: string;
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -404,7 +412,7 @@ export type SettingsQueryResult = {
     style?: "normal";
     listItem?: never;
     markDefs?: Array<{
-      href: string;
+      href?: string;
       openInNewTab?: boolean;
       _type: "link";
       _key: string;
@@ -429,25 +437,25 @@ export type SettingsQueryResult = {
 // Query: *[_type == "quiz"] | order(_createdAt desc) {    _id,    title,    description,    "questionCount": count(questions)  }
 export type AllQuizzesQueryResult = Array<{
   _id: string;
-  title: string;
+  title: string | null;
   description: string | null;
-  questionCount: number;
+  questionCount: number | null;
 }>;
 
 // Source: sanity/lib/queries.ts
 // Variable: quizByIdQuery
-// Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    title,    description,    wrongAnswerPenalty,    questions[] {      _key,      questionText,      questionType,      media {        type,        image {          asset->{            _id,            url,            metadata { lqip, dimensions }          },          alt        },        videoSource,        videoUrl,        videoFile {          asset->{            _id,            url          }        }      },      options[] {        _key,        text,        isCorrect      },      correctAnswer    }  }
+// Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    title,    description,    wrongAnswerPenalty,    questions[] {      _key,      questionText,      questionType,      media {        type,        image {          asset->{            _id,            url,            metadata { lqip, dimensions }          },          alt        },        videoSource,        videoUrl,        videoFile {          asset->{            _id,            url          }        },        audioFile {          asset->{            _id,            url          }        }      },      options[] {        _key,        text,        isCorrect      },      correctAnswer    }  }
 export type QuizByIdQueryResult = {
   _id: string;
-  title: string;
+  title: string | null;
   description: string | null;
-  wrongAnswerPenalty: number;
+  wrongAnswerPenalty: number | null;
   questions: Array<{
     _key: string;
-    questionText: string;
-    questionType: "radio" | "text";
+    questionText: string | null;
+    questionType: "radio" | "text" | null;
     media: {
-      type: "image" | "video" | null;
+      type: "audio" | "image" | "video" | null;
       image: {
         asset: {
           _id: string;
@@ -467,31 +475,37 @@ export type QuizByIdQueryResult = {
           url: string | null;
         } | null;
       } | null;
+      audioFile: {
+        asset: {
+          _id: string;
+          url: string | null;
+        } | null;
+      } | null;
     } | null;
     options: Array<{
       _key: string;
-      text: string;
+      text: string | null;
       isCorrect: boolean | null;
     }> | null;
     correctAnswer: string | null;
-  }>;
+  }> | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
 // Variable: quizForPlayerQuery
-// Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    title,    description,    wrongAnswerPenalty,    "totalQuestions": count(questions),    questions[] {      _key,      questionText,      questionType,      media {        type,        image {          asset->{            _id,            url,            metadata { lqip, dimensions }          },          alt        },        videoSource,        videoUrl,        videoFile {          asset->{            _id,            url          }        }      },      options[] {        _key,        text      }    }  }
+// Query: *[_type == "quiz" && _id == $quizId][0] {    _id,    title,    description,    wrongAnswerPenalty,    "totalQuestions": count(questions),    questions[] {      _key,      questionText,      questionType,      media {        type,        image {          asset->{            _id,            url,            metadata { lqip, dimensions }          },          alt        },        videoSource,        videoUrl,        videoFile {          asset->{            _id,            url          }        },        audioFile {          asset->{            _id,            url          }        }      },      options[] {        _key,        text      }    }  }
 export type QuizForPlayerQueryResult = {
   _id: string;
-  title: string;
+  title: string | null;
   description: string | null;
-  wrongAnswerPenalty: number;
-  totalQuestions: number;
+  wrongAnswerPenalty: number | null;
+  totalQuestions: number | null;
   questions: Array<{
     _key: string;
-    questionText: string;
-    questionType: "radio" | "text";
+    questionText: string | null;
+    questionType: "radio" | "text" | null;
     media: {
-      type: "image" | "video" | null;
+      type: "audio" | "image" | "video" | null;
       image: {
         asset: {
           _id: string;
@@ -511,12 +525,18 @@ export type QuizForPlayerQueryResult = {
           url: string | null;
         } | null;
       } | null;
+      audioFile: {
+        asset: {
+          _id: string;
+          url: string | null;
+        } | null;
+      } | null;
     } | null;
     options: Array<{
       _key: string;
-      text: string;
+      text: string | null;
     }> | null;
-  }>;
+  }> | null;
 } | null;
 
 // Query TypeMap
@@ -525,8 +545,8 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == \"quiz\"] | order(_createdAt desc) {\n    _id,\n    title,\n    description,\n    \"questionCount\": count(questions)\n  }\n": AllQuizzesQueryResult;
-    "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text,\n        isCorrect\n      },\n      correctAnswer\n    }\n  }\n": QuizByIdQueryResult;
-    "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    \"totalQuestions\": count(questions),\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text\n      }\n    }\n  }\n": QuizForPlayerQueryResult;
+    "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        },\n        audioFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text,\n        isCorrect\n      },\n      correctAnswer\n    }\n  }\n": QuizByIdQueryResult;
+    "\n  *[_type == \"quiz\" && _id == $quizId][0] {\n    _id,\n    title,\n    description,\n    wrongAnswerPenalty,\n    \"totalQuestions\": count(questions),\n    questions[] {\n      _key,\n      questionText,\n      questionType,\n      media {\n        type,\n        image {\n          asset->{\n            _id,\n            url,\n            metadata { lqip, dimensions }\n          },\n          alt\n        },\n        videoSource,\n        videoUrl,\n        videoFile {\n          asset->{\n            _id,\n            url\n          }\n        },\n        audioFile {\n          asset->{\n            _id,\n            url\n          }\n        }\n      },\n      options[] {\n        _key,\n        text\n      }\n    }\n  }\n": QuizForPlayerQueryResult;
   }
 }
 

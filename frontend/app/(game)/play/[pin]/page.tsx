@@ -15,9 +15,18 @@ import { QuestionCard } from '@/app/components/game/QuestionCard'
 import { Leaderboard } from '@/app/components/game/Leaderboard'
 import { PenaltyOverlay } from '@/app/components/game/PenaltyOverlay'
 import { PauseOverlay } from '@/app/components/game/PauseOverlay'
+import { AnswerFeedback } from '@/app/components/game/AnswerFeedback'
 import type { Lobby, Player } from '@/types/supabase'
 import type { QuizForPlayer } from '@/types/game'
 import { EmojiLoader } from '@/app/components/EmojiLoader'
+
+function startViewTransition(callback: () => void) {
+  if (document.startViewTransition) {
+    document.startViewTransition(callback)
+  } else {
+    callback()
+  }
+}
 
 export default function PlayPage() {
   const router = useRouter()
@@ -32,6 +41,11 @@ export default function PlayPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
+  const [answerFeedback, setAnswerFeedback] = useState<{
+    show: boolean
+    isCorrect: boolean
+    isLastQuestion: boolean
+  }>({ show: false, isCorrect: false, isLastQuestion: false })
 
   // Load initial data
   useEffect(() => {
@@ -115,6 +129,19 @@ export default function PlayPage() {
     onPenaltyEnd: () => setPenaltyUntil(null),
   })
 
+  // Handle feedback complete - transition to next question
+  const handleFeedbackComplete = useCallback(() => {
+    if (answerFeedback.isLastQuestion) {
+      setIsFinished(true)
+    }
+    startViewTransition(() => {
+      setAnswerFeedback({ show: false, isCorrect: false, isLastQuestion: false })
+      if (!answerFeedback.isLastQuestion) {
+        setCurrentQuestionIndex((prev) => prev + 1)
+      }
+    })
+  }, [answerFeedback.isLastQuestion])
+
   // Handle answer submission
   const handleAnswer = useCallback(
     async (answer: string) => {
@@ -135,19 +162,28 @@ export default function PlayPage() {
       }
 
       if (result.correct) {
-        if (result.finished) {
-          toast.success('Gratulerer! Du er ferdig!')
-          setIsFinished(true)
-        } else {
-          toast.success('Riktig!')
-          setCurrentQuestionIndex((prev) => prev + 1)
-        }
+        // Show correct answer feedback with view transition
+        setAnswerFeedback({
+          show: true,
+          isCorrect: true,
+          isLastQuestion: result.finished ?? false,
+        })
       } else {
-        toast.error(`Feil svar! ${result.penaltySeconds} sekunder straff.`)
-        if (result.penaltySeconds) {
-          setPenaltyUntil(
-            new Date(Date.now() + result.penaltySeconds * 1000).toISOString()
-          )
+        // Show wrong answer feedback briefly, then penalty overlay takes over
+        setAnswerFeedback({
+          show: true,
+          isCorrect: false,
+          isLastQuestion: false,
+        })
+        // After brief feedback, start penalty timer
+        const penaltySeconds = result.penaltySeconds ?? 0
+        if (penaltySeconds > 0) {
+          setTimeout(() => {
+            setAnswerFeedback({ show: false, isCorrect: false, isLastQuestion: false })
+            setPenaltyUntil(
+              new Date(Date.now() + penaltySeconds * 1000).toISOString()
+            )
+          }, 800)
         }
       }
     },
@@ -168,6 +204,7 @@ export default function PlayPage() {
         <div className="text-center text-text">
           <p className="mb-4">{error}</p>
           <button
+            type="button"
             onClick={() => window.location.reload()}
             className="rounded-lg border border-border bg-card px-4 py-2 hover:bg-card-hover"
           >
@@ -183,6 +220,15 @@ export default function PlayPage() {
 
   return (
     <div className="min-h-screen p-4">
+      {/* Answer feedback overlay */}
+      {answerFeedback.show && (
+        <AnswerFeedback
+          isCorrect={answerFeedback.isCorrect}
+          onComplete={handleFeedbackComplete}
+          duration={answerFeedback.isCorrect ? 1200 : 800}
+        />
+      )}
+
       {/* Pause overlay */}
       {isPaused && <PauseOverlay />}
 
@@ -220,10 +266,11 @@ export default function PlayPage() {
             </div>
           ) : currentQuestion ? (
             <QuestionCard
+              key={currentQuestion._key}
               question={currentQuestion}
               questionNumber={currentQuestionIndex + 1}
               onAnswer={handleAnswer}
-              disabled={isSubmitting || isInPenalty || isPaused}
+              disabled={isSubmitting || isInPenalty || isPaused || answerFeedback.show}
               isSubmitting={isSubmitting}
             />
           ) : null}

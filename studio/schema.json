@@ -17,6 +17,10 @@
               {
                 "type": "string",
                 "value": "video"
+              },
+              {
+                "type": "string",
+                "value": "audio"
               }
             ]
           },
@@ -59,6 +63,14 @@
           "value": {
             "type": "inline",
             "name": "videoFile"
+          },
+          "optional": true
+        },
+        "audioFile": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "audioFile"
           },
           "optional": true
         }
@@ -206,6 +218,38 @@
     }
   },
   {
+    "type": "type",
+    "name": "audioFile",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "asset": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sanity.fileAsset.reference"
+          },
+          "optional": true
+        },
+        "media": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "audioFile.media"
+          },
+          "optional": true
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "file"
+          }
+        }
+      }
+    }
+  },
+  {
     "name": "answerOption",
     "type": "type",
     "value": {
@@ -223,7 +267,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "isCorrect": {
           "type": "objectAttribute",
@@ -253,7 +297,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "questionType": {
           "type": "objectAttribute",
@@ -270,7 +314,7 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         },
         "media": {
           "type": "objectAttribute",
@@ -437,7 +481,7 @@
                     "value": {
                       "type": "string"
                     },
-                    "optional": false
+                    "optional": true
                   },
                   "openInNewTab": {
                     "type": "objectAttribute",
@@ -538,7 +582,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "description": {
         "type": "objectAttribute",
@@ -552,7 +596,7 @@
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "questions": {
         "type": "objectAttribute",
@@ -574,7 +618,7 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       }
     }
   },
@@ -596,28 +640,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "bottom": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "left": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "right": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -640,28 +684,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "y": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "height": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -706,7 +750,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "description": {
         "type": "objectAttribute",
@@ -795,7 +839,7 @@
                         "value": {
                           "type": "string"
                         },
-                        "optional": false
+                        "optional": true
                       },
                       "openInNewTab": {
                         "type": "objectAttribute",
@@ -1149,7 +1193,7 @@
             "type": "inline",
             "name": "assist.instruction.context.reference"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -1328,7 +1372,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "description": {
           "type": "objectAttribute",
@@ -1798,21 +1842,21 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "aspectRatio": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -2257,7 +2301,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "source": {
           "type": "objectAttribute",

@@ -1,8 +1,9 @@
 'use server'
 
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/client'
 import { quizByIdQuery } from '@/sanity/lib/queries'
+import type { QuizByIdQueryResult } from '@/sanity.types'
 import type { AnswerResult } from '@/types/game'
 
 export async function submitAnswer(
@@ -14,7 +15,11 @@ export async function submitAnswer(
   const supabase = await createServerSupabaseClient()
 
   // Get quiz to check answer
-  const quiz = await client.fetch(quizByIdQuery, { quizId })
+  const quiz = await sanityFetch<QuizByIdQueryResult>({
+    query: quizByIdQuery,
+    params: { quizId },
+    tags: ['quiz', quizId],
+  })
   if (!quiz || !quiz.questions[questionIndex]) {
     return { correct: false, error: 'Ugyldig sporsmal' }
   }

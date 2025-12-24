@@ -1,12 +1,14 @@
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/client'
 import { allQuizzesQuery } from '@/sanity/lib/queries'
+import type { AllQuizzesQueryResult } from '@/sanity.types'
 import Button from '@/app/components/Button'
 import { QuizSelector } from '@/app/components/game/QuizSelector'
 
-export const revalidate = 60 // Revalidate every minute
-
 export default async function CreatePage() {
-  const quizzes = await client.fetch(allQuizzesQuery)
+  const quizzes = await sanityFetch<AllQuizzesQueryResult>({
+    query: allQuizzesQuery,
+    tags: ['quiz'],
+  })
 
   return (
     <div className="min-h-screen p-4">

@@ -1,8 +1,9 @@
 'use server'
 
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/client'
 import { quizByIdQuery } from '@/sanity/lib/queries'
+import type { QuizByIdQueryResult } from '@/sanity.types'
 import type { LobbyStatus } from '@/types/supabase'
 
 function generatePin(): string {
@@ -13,7 +14,11 @@ export async function createLobby(quizId: string) {
   const supabase = await createServerSupabaseClient()
 
   // Verify quiz exists in Sanity
-  const quiz = await client.fetch(quizByIdQuery, { quizId })
+  const quiz = await sanityFetch<QuizByIdQueryResult>({
+    query: quizByIdQuery,
+    params: { quizId },
+    tags: ['quiz', quizId],
+  })
   if (!quiz) {
     return { error: 'Quiz ikke funnet' }
   }

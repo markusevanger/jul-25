@@ -1,5 +1,5 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
-import { HelpCircleIcon, ImageIcon, PlayIcon, LinkIcon, DocumentVideoIcon } from '@sanity/icons'
+import { HelpCircleIcon, ImageIcon, PlayIcon, LinkIcon, DocumentVideoIcon, ControlsIcon } from '@sanity/icons'
 import { RadioInputWithMeta } from '../../components/RadioInputWithMeta'
 
 const questionTypeOptions = [
@@ -29,6 +29,12 @@ const mediaTypeOptions = [
     value: 'video',
     icon: PlayIcon,
     description: 'Legg til video fra fil eller ekstern lenke',
+  },
+  {
+    title: 'Lyd',
+    value: 'audio',
+    icon: ControlsIcon,
+    description: 'Last opp lydfil (MP3, WAV, etc.)',
   },
 ]
 
@@ -129,6 +135,15 @@ export const question = defineType({
             accept: 'video/*',
           },
           hidden: ({ parent }) => parent?.type !== 'video' || parent?.videoSource !== 'file',
+        }),
+        defineField({
+          name: 'audioFile',
+          title: 'Lydfil',
+          type: 'file',
+          options: {
+            accept: 'audio/*',
+          },
+          hidden: ({ parent }) => parent?.type !== 'audio',
         }),
       ],
     }),

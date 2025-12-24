@@ -39,6 +39,12 @@ export const quizByIdQuery = defineQuery(`
             _id,
             url
           }
+        },
+        audioFile {
+          asset->{
+            _id,
+            url
+          }
         }
       },
       options[] {
@@ -76,6 +82,12 @@ export const quizForPlayerQuery = defineQuery(`
         videoSource,
         videoUrl,
         videoFile {
+          asset->{
+            _id,
+            url
+          }
+        },
+        audioFile {
           asset->{
             _id,
             url
