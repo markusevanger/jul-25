@@ -116,12 +116,12 @@ export function QuestionCard({
         </form>
       ) : (
         <div className="space-y-3">
-          {question.options?.map((option, index) => (
+          {question.options?.map((option: NonNullable<typeof question.options>[number], index: number) => (
             <button
               type="button"
               key={option._key}
-              onClick={() => handleSelectOption(option.text)}
-              disabled={disabled}
+              onClick={() => option.text && handleSelectOption(option.text)}
+              disabled={disabled || !option.text}
               className={`w-full rounded-lg px-4 py-3 text-left font-medium transition-colors ${
                 selectedOption === option.text
                   ? 'bg-primary/20 ring-2 ring-primary'
@@ -131,7 +131,7 @@ export function QuestionCard({
               <span className="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-border text-sm">
                 {String.fromCharCode(65 + index)}
               </span>
-              {option.text}
+              {option.text ?? ''}
             </button>
           ))}
         </div>

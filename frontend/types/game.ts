@@ -7,11 +7,11 @@ import type {
 
 // Use Sanity-generated types directly (NonNullable removes the null union from [0] query)
 export type Quiz = NonNullable<QuizByIdQueryResult>
-export type Question = Quiz['questions'][number]
+export type Question = NonNullable<Quiz['questions']>[number]
 
 // For player view - uses separate query that excludes correctAnswer
 export type QuizForPlayer = NonNullable<QuizForPlayerQueryResult>
-export type QuestionForPlayer = QuizForPlayer['questions'][number]
+export type QuestionForPlayer = NonNullable<QuizForPlayer['questions']>[number]
 
 // Quiz list item (from allQuizzesQuery)
 export type QuizListItem = AllQuizzesQueryResult[number]

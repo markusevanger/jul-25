@@ -215,7 +215,7 @@ export default function PlayPage() {
     )
   }
 
-  const currentQuestion = quiz.questions[currentQuestionIndex]
+  const currentQuestion = quiz.questions?.[currentQuestionIndex]
   const isPaused = lobbyStatus === 'paused'
 
   return (
@@ -250,7 +250,7 @@ export default function PlayPage() {
             <div
               className="h-full bg-success transition-all"
               style={{
-                width: `${(currentQuestionIndex / quiz.totalQuestions) * 100}%`,
+                width: `${(currentQuestionIndex / (quiz.totalQuestions ?? 1)) * 100}%`,
               }}
             />
           </div>

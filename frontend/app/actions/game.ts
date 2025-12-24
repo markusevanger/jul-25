@@ -20,11 +20,10 @@ export async function submitAnswer(
     params: { quizId },
     tags: ['quiz', quizId],
   })
-  if (!quiz || !quiz.questions[questionIndex]) {
+  const question = quiz?.questions?.[questionIndex]
+  if (!quiz || !question) {
     return { correct: false, error: 'Ugyldig sporsmal' }
   }
-
-  const question = quiz.questions[questionIndex]
   const playerAnswer = answer.toLowerCase().trim()
 
   // Check if answer is correct based on question type
@@ -35,7 +34,7 @@ export async function submitAnswer(
   } else if (question.questionType === 'radio' && question.options) {
     // Radio question: check if selected option is marked as correct
     const selectedOption = question.options.find(
-      (opt) => opt.text.toLowerCase().trim() === playerAnswer
+      (opt) => opt.text?.toLowerCase().trim() === playerAnswer
     )
     isCorrect = selectedOption?.isCorrect === true
   }
@@ -72,7 +71,7 @@ export async function submitAnswer(
   if (isCorrect) {
     // Move to next question
     const nextQuestion = questionIndex + 1
-    const isFinished = nextQuestion >= quiz.questions.length
+    const isFinished = nextQuestion >= (quiz.questions?.length ?? 0)
 
     const { error: updateError } = await supabase
       .from('players')

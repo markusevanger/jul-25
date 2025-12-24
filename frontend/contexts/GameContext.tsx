@@ -100,11 +100,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState)
 
   // Derived state
-  const totalQuestions = state.quiz?.questions.length ?? 0
+  const totalQuestions = state.quiz?.questions?.length ?? 0
   const currentQuestionIndex = state.currentPlayer?.current_question ?? 0
 
   const currentQuestion =
-    state.quiz && currentQuestionIndex < totalQuestions
+    state.quiz?.questions && currentQuestionIndex < totalQuestions
       ? state.quiz.questions[currentQuestionIndex]
       : null
 

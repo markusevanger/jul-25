@@ -57,7 +57,7 @@ export default function AdminPage() {
     },
   })
 
-  const leaderboard = useLeaderboard(players, quiz?.questions.length ?? 0)
+  const leaderboard = useLeaderboard(players, quiz?.questions?.length ?? 0)
 
   async function handleStatusChange(newStatus: 'playing' | 'paused' | 'finished') {
     if (!lobby) return

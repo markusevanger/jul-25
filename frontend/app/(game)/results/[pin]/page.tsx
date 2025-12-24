@@ -61,7 +61,7 @@ export default function ResultsPage() {
     loadData()
   }, [pin, router])
 
-  const leaderboard = useLeaderboard(players, quiz?.questions.length ?? 0)
+  const leaderboard = useLeaderboard(players, quiz?.questions?.length ?? 0)
   const winner = leaderboard.find((entry) => entry.isFinished)
   const isCurrentUserWinner = winner && currentPlayerId === winner.playerId
 
